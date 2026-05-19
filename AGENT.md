@@ -719,6 +719,10 @@ Rainmeter `WebParser` does not truly parse JSON. It fetches text and extracts va
 
 Keep regexes narrow enough to match current JSON, but not overcomplicated.
 
+Use `(?si)` (case-insensitive, dot matches newline) for Glances JSON. Do **not** use
+`(?U)` / `(?siU)`: in Rainmeter's PCRE it makes `+` ungreedy, so `([0-9]+)` captures
+only one digit (`cpucore: 12` → `1`, byte totals → `0.0 / 0.0 GB`).
+
 Examples:
 
 ```ini
@@ -726,7 +730,7 @@ Examples:
 Measure=WebParser
 URL=#GlancesCPUUrl#
 UpdateRate=#GlancesUpdateRate#
-RegExp=(?siU).*"total"\s*:\s*([0-9.]+).*"cpucore"\s*:\s*([0-9.]+).*
+RegExp=(?si).*"total"\s*:\s*([0-9.]+).*"cpucore"\s*:\s*([0-9]+).*
 ```
 
 Then child measures read `StringIndex`:

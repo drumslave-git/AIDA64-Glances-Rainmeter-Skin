@@ -107,10 +107,12 @@ AIDA_MEMUsed=#AIDA_MEM_Used#
 AIDA_MEMFree=#AIDA_MEM_Free#
 
 ; ---------- Glances API (https://github.com/nicolargo/glances/blob/develop/docs/api/restful.rst) ----------
-; Must match server scheme (http:// redirects to HTML, breaks WebParser)
-GlancesBaseUrl=https://glances.tcloud.monster/api/4
+; Use local HTTP for Rainmeter. Public HTTPS (glances.tcloud.monster) often fails in
+; WebParser with revoked-certificate errors even when SSLVerify=0; fetches then show 0.
+; Remote/browser: https://glances.tcloud.monster/api/4
+GlancesBaseUrl=http://192.168.88.219:61208/api/4
 GlancesUpdateRate=3
-; Rainmeter WebParser: 0 = skip TLS verify (needed for some Glances hosts)
+; Rainmeter WebParser: 0 = skip TLS verify (only needed for HTTPS Glances hosts)
 GlancesSSLVerify=0
 ; Per-item keys for /gpu/gpu_id/value/{id} and /network/interface_name/value/{name}
 GlancesGpuId=nvidia0
