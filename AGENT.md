@@ -39,6 +39,8 @@ Panel/
       CPU.ini
     GPU/
       GPU.ini
+    VRAM/
+      VRAM.ini
     FPS/
       FPS.ini
     MEM/
@@ -69,7 +71,7 @@ Panel/
 ```
 
 Do not flatten this structure.
-Do not put `CPU.ini`, `GPU.ini`, `FPS.ini`, `MEM.ini`, `NETWORK.ini`, or `PROCESSES_*.ini` directly under `AIDA64/` or `Glances/`.
+Do not put `CPU.ini`, `GPU.ini`, `VRAM.ini`, `FPS.ini`, `MEM.ini`, `NETWORK.ini`, or `PROCESSES_*.ini` directly under `AIDA64/` or `Glances/`.
 
 The top-level `PROCESSES_CPU/`, `PROCESSES_MEM/`, `PROCESSES_GPU/` panels are the local AIDA64/UsageMonitor-based panels. The Glances-sourced equivalents live under `Glances/PROCESSES_CPU/` and `Glances/PROCESSES_MEM/`. There is no `Glances/PROCESSES_GPU/` — see "Glances data source" below for why.
 
@@ -155,6 +157,7 @@ Current tile sizes by panel:
 | `AIDA64/CPU`                       | 1 x 1        | 400x280 |
 | `AIDA64/MEM`                       | 1 x 1        | 400x280 |
 | `AIDA64/GPU`                       | 1 x 1        | 400x280 |
+| `AIDA64/VRAM`                      | 1 x 1        | 400x280 |
 | `AIDA64/FPS`                       | 1 x 1        | 400x280 |
 | `AIDA64/NETWORK`                   | 1 x 1        | 400x280 |
 | `Glances/CPU`                      | 1 x 1        | 400x280 |
@@ -169,9 +172,9 @@ Current tile sizes by panel:
 
 Most panels are 1x1. Two-cell-wide tiles are reserved for the Glances
 `PROCESSES_*` panels (they need horizontal room for the cmdline column).
-The AIDA64 FPS panel is its own 1x1 tile (split out from the GPU panel) so
-the large RTSS FPS readout and its autoscaled history get a dedicated tile
-instead of being squeezed into the bottom of the GPU panel.
+The AIDA64 VRAM and FPS panels are their own 1x1 tiles (split out from the
+GPU panel) so VRAM usage/history and the large RTSS FPS readout each get a
+dedicated tile instead of being squeezed into one GPU panel.
 
 To add a new panel:
 
@@ -753,14 +756,26 @@ Display:
 Required order:
 
 1. Clock
-2. Utilization
-3. VRAM
-4. VRAM graph
+2. Utilization progress bar
+3. Temperature (`Value.TGPU1` via `#AIDA_GPUTemp#`)
+4. GPU utilization graph (fixed 0–100)
 
-Use fixed 0–100 graph for VRAM percentage.
+VRAM is intentionally NOT part of this panel. VRAM used/total, progress bar,
+and VRAM history live in `Panel/AIDA64/VRAM/VRAM.ini`.
 
 FPS is intentionally NOT part of this panel. RTSS FPS lives in
-`Panel/AIDA64/FPS/FPS.ini` so the GPU panel stays a standard 1x1 tile.
+`Panel/AIDA64/FPS/FPS.ini`.
+
+### `Panel/AIDA64/VRAM/VRAM.ini`
+
+Required order:
+
+1. Used / total MB
+2. VRAM percentage progress bar
+3. VRAM graph (fixed 0–100)
+
+Use AIDA64 `Value.SUSEDVMEM`, `Value.SFREEVMEM`, and `Value.SVMEMUSAGE`
+(exposed as `#AIDA_GPUVRAMUsed#`, `#AIDA_GPUVRAMFree#`, `#AIDA_GPUVRAMPercent#`).
 
 ### `Panel/AIDA64/FPS/FPS.ini`
 
