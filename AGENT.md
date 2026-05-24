@@ -991,7 +991,11 @@ expose per-process GPU usage.
 - Preserve user-edited styles unless explicitly asked to redesign.
 - Do not hallucinate sensor keys or API fields. If a value is not present in AIDA64 registry or Glances JSON, state that it is unavailable.
 
-## DUMP of AIDA64 registry
+### Glances RESTful API
+
+https://github.com/nicolargo/glances/blob/develop/docs/api/restful.rst
+
+### DUMP of AIDA64 registry
 
 HKEY_CURRENT_USER\Software\FinalWire\AIDA64\SensorValues
     Label.TMOBO    REG_SZ    Motherboard
